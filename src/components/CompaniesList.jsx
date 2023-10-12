@@ -11,7 +11,7 @@ export default function CompaniesList() {
           return (
             <Link
               key={el.id}
-              className="companyCard"
+              className="animate-flip-up animate-once"
               to={`/catalogos/${el.name}`}
             >
               <SissyCard imgURL={el.img}>
