@@ -15,7 +15,9 @@ export default function CompaniesList() {
               to={`/catalogos/${el.name}`}
             >
               <SissyCard imgURL={el.img}>
-                <h2 className="text-lg text-center underline">{el.name}</h2>
+                <h2 className="text-lg text-center underline">
+                  {el.name.toUpperCase()}
+                </h2>
               </SissyCard>
             </Link>
           );
