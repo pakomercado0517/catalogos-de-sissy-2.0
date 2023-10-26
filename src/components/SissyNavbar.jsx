@@ -7,11 +7,13 @@ function SissyNavbar() {
   return (
     <section className="mb-6">
       <Navbar fluid rounded className="bg-bgDark shadow-lg">
-        <Navbar.Brand href="/">
-          <img src={logo} alt="logo store" className="mr-3 h-6 sm:h-9" />
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            Catálogos de Sissy
-          </span>
+        <Navbar.Brand>
+          <Link to="/">
+            <img src={logo} alt="logo store" className="mr-3 h-6 sm:h-9" />
+            <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+              Catálogos de Sissy
+            </span>
+          </Link>
         </Navbar.Brand>
         <div className="flex md:order-2">
           <Navbar.Toggle />
