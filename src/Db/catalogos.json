@@ -156,6 +156,26 @@
   {
     "priceShoes": [
       {
+        "href": "https://www.priceshoes.com/catalogos/1134536?section=B%C3%A1sicos",
+        "imgSrc": "https://images.priceshoes.digital/catalogos/1134536_0.jpg"
+      },
+      {
+        "href": "https://www.priceshoes.com/catalogos/1117177?section=B%C3%A1sicos",
+        "imgSrc": "https://images.priceshoes.digital/catalogos/1117177_0.jpg"
+      },
+      {
+        "href": "https://www.priceshoes.com/catalogos/1131864?section=B%C3%A1sicos",
+        "imgSrc": "https://images.priceshoes.digital/catalogos/1131864_0.jpg"
+      },
+      {
+        "href": "https://www.priceshoes.com/catalogos/1136863?section=B%C3%A1sicos",
+        "imgSrc": "https://images.priceshoes.digital/catalogos/1136863_0.jpg"
+      },
+      {
+        "href": "https://www.priceshoes.com/catalogos/1129207?section=B%C3%A1sicos",
+        "imgSrc": "https://images.priceshoes.digital/catalogos/1129207_0.jpg"
+      },
+      {
         "href": "https://www.priceshoes.com/catalogos/1126064?section=B%C3%A1sicos",
         "imgSrc": "https://images.priceshoes.digital/catalogos/1126064_0.jpg"
       },
@@ -200,10 +220,6 @@
         "imgSrc": "https://images.priceshoes.digital/catalogos/1120160_0.jpg"
       },
       {
-        "href": "https://www.priceshoes.com/catalogos/1114708?section=B%C3%A1sicos",
-        "imgSrc": "https://images.priceshoes.digital/catalogos/1114708_0.jpg"
-      },
-      {
         "href": "https://www.priceshoes.com/catalogos/1119590?section=B%C3%A1sicos",
         "imgSrc": "https://images.priceshoes.digital/catalogos/1119590_0.jpg"
       },
@@ -240,30 +256,22 @@
         "imgSrc": "https://images.priceshoes.digital/catalogos/1108333_0.jpg"
       },
       {
-        "href": "https://www.priceshoes.com/catalogos/1110769?section=B%C3%A1sicos",
-        "imgSrc": "https://images.priceshoes.digital/catalogos/1110769_0.jpg"
-      },
-      {
         "href": "https://www.priceshoes.com/catalogos/1108325?section=B%C3%A1sicos",
         "imgSrc": "https://images.priceshoes.digital/catalogos/1108325_0.jpg"
-      },
-      {
-        "href": "https://www.priceshoes.com/catalogos/1108329?section=B%C3%A1sicos",
-        "imgSrc": "https://images.priceshoes.digital/catalogos/1108329_0.jpg"
       }
     ]
   },
   {
     "andrea": [
       {
+        "href": "https://cdn-img.andrea.com/mx/1/329/",
+        "imgSrc": "http://api.vtexcrm.com.br/andreamx/dataentities/CD/documents/329-1-1-1-30/Imagen/attachments/INVIERNO.jpg",
+        "title": "INVIERNO"
+      },
+      {
         "href": "https://cdn-img.andrea.com/mx/1/544/",
         "imgSrc": "http://api.vtexcrm.com.br/andreamx/dataentities/CD/documents/544-1-1-1-30/Imagen/attachments/OFERTAS%20DE%20ANIVERSARIO.jpg",
         "title": "OFERTAS DE ANIVERSARIO"
-      },
-      {
-        "href": "https://cdn-img.andrea.com/mx/38/328/",
-        "imgSrc": "http://api.vtexcrm.com.br/andreamx/dataentities/CD/documents/328-1-1-38-30/Imagen/attachments/OUTLET.jpg",
-        "title": "OUTLET"
       },
       {
         "href": "https://cdn-img.andrea.com/mx/1/263/",
@@ -351,9 +359,14 @@
         "title": "FERRATO SPORT"
       },
       {
-        "href": "https://cdn-img.andrea.com/mx/1/493/",
-        "imgSrc": "http://api.vtexcrm.com.br/andreamx/dataentities/CD/documents/493-1-1-1-30/Imagen/attachments/QUINCENA%20DE%20DESCUENTOS.jpg",
-        "title": "QUINCENA DE DESCUENTOS"
+        "href": "https://cdn-img.andrea.com/mx/1/464/",
+        "imgSrc": "http://api.vtexcrm.com.br/andreamx/dataentities/CD/documents/464-1-1-1-30/Imagen/attachments/LO%20MAS%20ABRIGADOR.jpg",
+        "title": "LO MÁS ABRIGADOR"
+      },
+      {
+        "href": "https://cdn-img.andrea.com/mx/1/490/",
+        "imgSrc": "http://api.vtexcrm.com.br/andreamx/dataentities/CD/documents/490-1-1-1-30/Imagen/attachments/QUINCENA%20DE%20ANIVERSARIOS%20MARCAS.jpg",
+        "title": "QUINCENA DE ANIVERSARIOS MARCAS"
       },
       {
         "href": "https://cdn-img.andrea.com/mx/1/540/",
