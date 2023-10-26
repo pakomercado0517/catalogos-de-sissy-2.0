@@ -8,7 +8,7 @@ function SissyNavbar() {
     <section className="mb-6">
       <Navbar fluid rounded className="bg-bgDark shadow-lg">
         <Navbar.Brand>
-          <Link to="/">
+          <Link to="/" className="flex">
             <img src={logo} alt="logo store" className="mr-3 h-6 sm:h-9" />
             <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
               Catálogos de Sissy
