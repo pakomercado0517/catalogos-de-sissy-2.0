@@ -6,7 +6,7 @@ export default function SissyCard({ children, image }) {
   return (
     <article>
       <Card
-        className="bg-newGray w-72"
+        className="bg-newGray w-72 max-h-[480px]"
         imgAlt="show company or product in the card"
         imgSrc={image}
       >
