@@ -1,0 +1,15 @@
+{
+  "name": "puppeteer_testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "pakomercado0517",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^21.3.8"
+  }
+}
