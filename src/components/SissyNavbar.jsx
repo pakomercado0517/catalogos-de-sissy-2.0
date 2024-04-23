@@ -1,4 +1,3 @@
-"use client";
 import { useState, useEffect } from "react";
 import { Navbar } from "flowbite-react";
 import { useSelector } from "react-redux";
@@ -18,7 +17,7 @@ function SissyNavbar() {
   }, [company, name]);
 
   return (
-    <section className="mb-6 fixed top-0 z-30 w-full">
+    <section className="fixed top-0 z-30 mb-6 w-full">
       <Navbar fluid rounded className="bg-bgDark shadow-lg">
         <div>
           <Link to="/" className="flex">
@@ -29,7 +28,7 @@ function SissyNavbar() {
           </Link>
         </div>
         <div className="flex md:order-2">
-          <div className="flex items-center mr-2">
+          <div className="mr-2 flex items-center">
             <h2 className="text-lg font-bold italic"> {name?.toUpperCase()}</h2>
           </div>
           <Navbar.Toggle />
