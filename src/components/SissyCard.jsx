@@ -1,4 +1,3 @@
-"use client";
 import { Card } from "flowbite-react";
 
 // eslint-disable-next-line react/prop-types
