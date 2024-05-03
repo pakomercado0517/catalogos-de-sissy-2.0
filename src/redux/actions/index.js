@@ -50,7 +50,7 @@ export const getCompanyById = (id) => async (dispatch) => {
       });
     } else {
       const company = await axios.get(
-        `${constants.server}/companies/information/${id}`
+        `${constants.server}/companies/information/${id}`,
       );
       dispatch({
         type: GET_COMPANY_BY_ID,
