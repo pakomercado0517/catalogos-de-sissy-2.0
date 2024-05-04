@@ -12,7 +12,7 @@ async function priceShoesScraping() {
     await page.goto("https://www.priceshoes.com/catalogos");
 
     const lists = await page.$$(
-      '[class="relative sm:bg-gray-100 flex items-center overflow-hidden"]'
+      '[class="relative sm:bg-gray-100 flex items-center overflow-hidden"]',
     );
 
     for (const list of lists) {
@@ -98,7 +98,7 @@ async function cklassScraping() {
     await page.goto("https://cklass.com/pages/catalogos");
     const main = await page.$("main");
     const sectionTemplate = await main.$(
-      "#shopify-section-template--19024347791652__d0e59c19-e68b-4d75-a5a1-83624c38baf5"
+      "#shopify-section-template--19024347791652__d0e59c19-e68b-4d75-a5a1-83624c38baf5",
     );
     const gridContainer = await sectionTemplate.$(".catalogue-grid-container");
     const lists = await gridContainer.$$(".catalogue-grid-item");
@@ -108,7 +108,7 @@ async function cklassScraping() {
       const href = await list.$eval("a[href]", (el) => el.href);
       const title = await list.$eval(
         ".catalogue-grid-caption",
-        (t) => t.textContent
+        (t) => t.textContent,
       );
       if (enlace) {
         const imgSrc = await enlace.$eval("img", (item) => item.src);
@@ -130,7 +130,52 @@ async function cklassScraping() {
   }
 }
 
+async function vianneyScrapping() {
+  const arr = [];
+  try {
+    const browser = await puppeteer.launch({
+      headless: "new",
+      args: ["--no-sandbox", "--disable-features=site-per-process"],
+    });
+
+    const page = await browser.newPage();
+    await page.goto("https://catalogos.vianney.mx/");
+    const main = await page.$("main");
+    const bgWhite = await main.$(".bg-white");
+    const grid = await bgWhite.$(".grid");
+    await grid.waitForSelector("a");
+    const anchors = await grid.$$("a");
+
+    for (const anchor of anchors) {
+      // Extraer href del enlace
+      const href = await (await anchor.getProperty("href")).jsonValue();
+
+      // Extraer src de la imagen dentro del enlace
+      const img = await anchor.$("img");
+      const src = await (await img.getProperty("src")).jsonValue();
+
+      // Extraer texto del h3 dentro del enlace
+      const h3 = await anchor.$("h3");
+      const text = await (await h3.getProperty("textContent")).jsonValue();
+
+      arr.push({ href, src, text });
+    }
+
+    const result = {
+      vianney: arr,
+    };
+    catalogs.push(result);
+
+    await fs.writeFile(fileURL, JSON.stringify(catalogs, null, 2));
+
+    await browser.close();
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 // Llamar a las funciones
 priceShoesScraping();
 andreaScraping();
 cklassScraping();
+vianneyScrapping();
