@@ -10,6 +10,7 @@ export const GET_ALL_COMPANIES = "GET_ALL_COMPANIES";
 export const GET_CATALOGUES_BY_COMPANY = "GET_CATALOGUES_BY_COMPANY";
 export const RESET_CATALOGUES_BY_COMPANY = "RESET_CATALOGUES_BY_COMPANY";
 export const GET_COMPANY_BY_ID = "GET_COMPANY_BY_ID";
+export const UPDATE_CATALOGUES_BY_ID = "UPDATE_CATALOGUES_BY_ID";
 
 export const getAllCompanies = () => async (dispatch) => {
   try {
@@ -59,5 +60,23 @@ export const getCompanyById = (id) => async (dispatch) => {
     }
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const updateCataloguesById = (id) => async (dispatch) => {
+  dispatch({
+    type: UPDATE_CATALOGUES_BY_ID,
+    payload: "",
+  });
+  try {
+    const isUpdateCatalogues = await axios.get(
+      `${constants.server}/catalogos/updateCatalogues/${id}`,
+    );
+    dispatch({
+      type: UPDATE_CATALOGUES_BY_ID,
+      payload: isUpdateCatalogues.data,
+    });
+  } catch (error) {
+    console.log(error.response);
   }
 };

@@ -42,7 +42,7 @@ async function andreaScraping() {
   try {
     const browser = await puppeteer.launch({
       headless: false,
-      args: ["--disable-cache"],
+      // args: ["--disable-cache"],
     });
 
     const page = await browser.newPage();

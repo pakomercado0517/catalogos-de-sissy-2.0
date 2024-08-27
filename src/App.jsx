@@ -3,6 +3,7 @@ import SissyNavbar from "./components/SissyNavbar";
 import Home from "./pages/Home";
 import Catalogos from "./pages/Catalogos";
 import SissyFooter from "./components/SissyFooter";
+import UpdateCatalogos from "./pages/UpdateCatalogos";
 
 function App() {
   const location = useLocation();
@@ -17,6 +18,7 @@ function App() {
           path="/catalogos/:id"
           element={<Catalogos />}
         />
+        <Route path="/actualizar" element={<UpdateCatalogos />} />
       </Routes>
       <SissyFooter />
     </section>
