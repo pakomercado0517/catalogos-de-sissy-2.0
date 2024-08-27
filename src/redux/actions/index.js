@@ -26,7 +26,9 @@ export const getAllCompanies = () => async (dispatch) => {
 
 export const getCataloguesByCompany = (id) => async (dispatch) => {
   try {
-    const catalogues = await axios.get(`${constants.server}/companies/${id}`);
+    const catalogues = await axios.get(
+      `${constants.server}/companies/${id}`,
+    );
     dispatch({
       type: GET_CATALOGUES_BY_COMPANY,
       payload: catalogues.data,
@@ -65,9 +67,9 @@ export const getCompanyById = (id) => async (dispatch) => {
 
 export const updateCataloguesById = (id) => async (dispatch) => {
   dispatch({
-    type: UPDATE_CATALOGUES_BY_ID,
-    payload: "",
-  });
+    type:UPDATE_CATALOGUES_BY_ID,
+    payload: ""
+  })
   try {
     const isUpdateCatalogues = await axios.get(
       `${constants.server}/catalogos/updateCatalogues/${id}`,
