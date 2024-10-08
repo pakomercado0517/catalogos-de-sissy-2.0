@@ -1,5 +1,4 @@
 import ContentLoader from "react-content-loader";
-import { Spinner } from "flowbite-react";
 
 export default function CardSkeleton(props) {
   return (

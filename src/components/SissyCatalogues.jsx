@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -66,10 +67,18 @@ export default function SissyCatalogues() {
         })
       ) : (
         <>
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
-          <CardSkeleton />
+          <div>
+            <CardSkeleton />
+          </div>
+          <div>
+            <CardSkeleton />
+          </div>
+          <div>
+            <CardSkeleton />
+          </div>
+          <div>
+            <CardSkeleton />
+          </div>
         </>
         // <div className="w-full my-48 flex md:justify-center md:items-center lg:justify-items-center lg:self-center ">
         //   <Modal show={handleModal}>
