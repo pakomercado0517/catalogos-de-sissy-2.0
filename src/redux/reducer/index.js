@@ -3,12 +3,14 @@ import {
   GET_CATALOGUES_BY_COMPANY,
   RESET_CATALOGUES_BY_COMPANY,
   GET_COMPANY_BY_ID,
+  UPDATE_CATALOGUES_BY_ID,
 } from "../actions";
 
 const initialState = {
   companies: [],
   currentCatalogues: [],
   company: [],
+  updateMessage: "",
 };
 export default function rootReducer(state = initialState, { type, payload }) {
   switch (type) {
@@ -23,6 +25,9 @@ export default function rootReducer(state = initialState, { type, payload }) {
 
     case GET_COMPANY_BY_ID:
       return { ...state, company: payload };
+
+    case UPDATE_CATALOGUES_BY_ID:
+      return { ...state, updateMessage: payload };
 
     default:
       return state;

@@ -17,7 +17,7 @@ function SissyNavbar() {
   }, [company, name]);
 
   return (
-    <section className="fixed top-0 z-30 mb-6 w-full">
+    <section className="mb-8">
       <Navbar fluid rounded className="bg-bgDark shadow-lg">
         <div>
           <Link to="/" className="flex">
