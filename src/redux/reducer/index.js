@@ -27,7 +27,7 @@ export default function rootReducer(state = initialState, { type, payload }) {
       return { ...state, company: payload };
 
     case UPDATE_CATALOGUES_BY_ID:
-      return { ...state, updateMessage: payload };
+      return { ...state, updateMessage: payload.message };
 
     default:
       return state;
