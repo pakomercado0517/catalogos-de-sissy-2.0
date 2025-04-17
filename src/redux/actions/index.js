@@ -2,7 +2,6 @@ import axios from "axios";
 
 const { VITE_LOCAL_SERVER, VITE_SERVER } = import.meta.env;
 const constants = {
-  localhost: VITE_LOCAL_SERVER,
   server: VITE_SERVER,
 };
 
@@ -14,7 +13,7 @@ export const UPDATE_CATALOGUES_BY_ID = "UPDATE_CATALOGUES_BY_ID";
 
 export const getAllCompanies = () => async (dispatch) => {
   try {
-    const companies = await axios.get(`${constants.localhost}/companies`);
+    const companies = await axios.get(`${constants.server}/companies`);
     dispatch({
       type: GET_ALL_COMPANIES,
       payload: companies.data,
@@ -26,9 +25,6 @@ export const getAllCompanies = () => async (dispatch) => {
 
 export const getCataloguesByCompany = (id) => async (dispatch) => {
   try {
-    const catalogues = await axios.get(
-      `${constants.localhost}/companies/${id}`,
-    );
     const catalogues = await axios.get(`${constants.server}/companies/${id}`);
     dispatch({
       type: GET_CATALOGUES_BY_COMPANY,
@@ -54,7 +50,7 @@ export const getCompanyById = (id) => async (dispatch) => {
       });
     } else {
       const company = await axios.get(
-        `${constants.localhost}/companies/information/${id}`,
+        `${constants.server}/companies/information/${id}`,
       );
       dispatch({
         type: GET_COMPANY_BY_ID,
@@ -73,7 +69,7 @@ export const updateCataloguesById = (id) => async (dispatch) => {
   });
   try {
     const isUpdateCatalogues = await axios.get(
-      `${constants.localhost}/catalogos/updateCatalogues/${id}`,
+      `${constants.server}/catalogos/updateCatalogues/${id}`,
     );
     dispatch({
       type: UPDATE_CATALOGUES_BY_ID,
