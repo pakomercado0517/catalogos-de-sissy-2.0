@@ -48,7 +48,7 @@ export default function SissyCatalogues() {
   // };
 
   return (
-    <section className="grid justify-center gap-3 md:grid-cols-2 md:justify-items-center lg:grid-cols-4">
+    <section className="grid justify-items-center gap-10 md:grid-cols-2 md:justify-items-center lg:grid-cols-3">
       {currentCatalogues.length > 0 ? (
         currentCatalogues.map((cat) => {
           return (

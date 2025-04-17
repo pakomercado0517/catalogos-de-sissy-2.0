@@ -18,24 +18,30 @@ function SissyNavbar() {
 
   return (
     <section className="mb-8">
-      <Navbar fluid rounded className="bg-bgDark shadow-lg">
-        <div>
+      <Navbar fluid rounded className="bg-neutral-900 shadow-lg">
+        <Navbar.Brand>
           <Link to="/" className="flex">
-            <img src={logo} alt="logo store" className="mr-3 h-6 sm:h-9" />
+            <img src={logo} alt="logo store" className="mr-3 h-20" />
             <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
               Catálogos de Sissy
             </span>
           </Link>
-        </div>
+        </Navbar.Brand>
         <div className="flex md:order-2">
-          <div className="mr-2 flex items-center">
-            <h2 className="text-lg font-bold italic"> {name?.toUpperCase()}</h2>
-          </div>
+          <div className=""></div>
           <Navbar.Toggle />
         </div>
+        <h2 className="text-lg font-bold italic sm:hidden lg:block">
+          {" "}
+          {name?.toUpperCase()}
+        </h2>
         <Navbar.Collapse>
-          <Link to="/">Inicio</Link>
-          <Link to="/contact">Cotizaciones</Link>
+          <Link className="text-lg font-semibold" to="/">
+            Inicio
+          </Link>
+          <Link className="text-lg font-semibold" to="/contact">
+            Cotizaciones
+          </Link>
         </Navbar.Collapse>
       </Navbar>
     </section>

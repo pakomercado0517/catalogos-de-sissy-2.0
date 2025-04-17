@@ -13,8 +13,8 @@ export default function CardSkeleton(props) {
         className="transition-all"
         {...props}
       >
-        <rect x="128" y="408" rx="2" ry="2" width="211" height="17" />
-        <rect x="128" y="84" rx="2" ry="2" width="211" height="320" />
+        <rect x="128" y="298" rx="2" ry="2" width="211" height="17" />
+        <rect x="128" y="84" rx="2" ry="2" width="211" height="210" />
       </ContentLoader>
     </>
   );
