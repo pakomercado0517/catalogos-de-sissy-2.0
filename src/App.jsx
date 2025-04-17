@@ -9,7 +9,7 @@ function App() {
   const location = useLocation();
 
   return (
-    <section>
+    <section className="bg-neutral-900">
       <SissyNavbar key={location.key} />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -4,18 +4,20 @@ import { Card } from "flowbite-react";
 export default function SissyCard({ children, image }) {
   return (
     <article>
-      <Card
-        className="max-h-[480px] w-72 bg-newGray"
-        imgAlt="show company or product in the card"
-        imgSrc={image}
-      >
-        {/* <img
-          src={image}
-          alt="show company or product in the card"
-          className="w-52 h-52"
-        /> */}
-        {children}
-      </Card>
+          <div
+            className="group w-80 relative rounded-2xl overflow-hidden shadow-xl hover:scale-[1.03] transition-transform duration-300"
+          >
+            <img
+              src={image}
+              alt="Portada del Catálogo"
+              className="w-full h-72 object-cover"
+            />
+            <div className="absolute bottom-0 left-0 right-0 bg-black/60 py-3 px-4 text-center">
+              <p className="text-lg font-semibold tracking-wide group-hover:text-gray-400 transition-colors">
+                {children}
+              </p>
+            </div>
+          </div>
     </article>
   );
 }
