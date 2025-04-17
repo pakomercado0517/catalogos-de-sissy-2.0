@@ -29,6 +29,7 @@ export const getCataloguesByCompany = (id) => async (dispatch) => {
     const catalogues = await axios.get(
       `${constants.localhost}/companies/${id}`,
     );
+    const catalogues = await axios.get(`${constants.server}/companies/${id}`);
     dispatch({
       type: GET_CATALOGUES_BY_COMPANY,
       payload: catalogues.data,

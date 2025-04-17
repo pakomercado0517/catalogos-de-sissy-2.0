@@ -2,8 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllCompanies, updateCataloguesById } from "../redux/actions";
-import { Alert, Spinner } from "flowbite-react";
-import AlertAdditionalContent from "../components/AlertAdditionalContent";
+import { Alert, Button, Spinner } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 
 export default function UpdateCatalogos() {
@@ -34,18 +33,14 @@ export default function UpdateCatalogos() {
       <div
         className={`mt-8 flex justify-center ${showAlert ? "w-full" : "hidden"}`}
       >
-        <Alert
-          className="max-w-5xl"
-          color="dark"
-          additionalContent={
-            <AlertAdditionalContent
-              handleRedirect={handleRedirect}
-              updateMessage={updateMessage}
-            />
-          }
-        >
-          {updateMessage === "success" ? (
-            <span className="text-center text-lg">{message}</span>
+        <Alert className="max-w-5xl" color="dark">
+          {updateMessage ? (
+            <div className="mt-4 flex flex-col items-center">
+              <span className="text-center text-lg">{message}</span>
+              <Button className="mt-4" color="purple" onClick={handleRedirect}>
+                Ir a Inicio
+              </Button>
+            </div>
           ) : (
             <Spinner color="pink" size="xl" />
           )}
