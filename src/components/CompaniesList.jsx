@@ -23,7 +23,7 @@ export default function CompaniesList() {
             <a
               key={company.name}
               href={`/catalogos/${company.id}`}
-              className="group relative w-80 overflow-hidden rounded-2xl shadow-xl transition-transform duration-300 hover:scale-[1.03]"
+              className="group relative w-80 animate-fade-down overflow-hidden rounded-2xl shadow-xl transition-transform duration-300 hover:scale-[1.03]"
             >
               <img
                 src={company.image}

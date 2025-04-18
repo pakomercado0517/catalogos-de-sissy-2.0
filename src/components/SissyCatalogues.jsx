@@ -68,16 +68,16 @@ export default function SissyCatalogues() {
       ) : (
         <>
           <div>
-            <CardSkeleton />
+            <CardSkeleton className="animate-fade-up" />
           </div>
           <div>
-            <CardSkeleton />
+            <CardSkeleton className="animate-fade-up" />
           </div>
           <div>
-            <CardSkeleton />
+            <CardSkeleton className="animate-fade-up" />
           </div>
           <div>
-            <CardSkeleton />
+            <CardSkeleton className="animate-fade-up" />
           </div>
         </>
         // <div className="w-full my-48 flex md:justify-center md:items-center lg:justify-items-center lg:self-center ">
