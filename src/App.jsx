@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Catalogos from "./pages/Catalogos";
 import SissyFooter from "./components/SissyFooter";
 import UpdateCatalogos from "./pages/UpdateCatalogos";
+import ChatBox from "./components/ChatBox";
 
 function App() {
   const location = useLocation();
@@ -21,6 +22,7 @@ function App() {
         <Route path="/actualizar" element={<UpdateCatalogos />} />
       </Routes>
       <SissyFooter />
+      <ChatBox />
     </section>
   );
 }
