@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllCatalogues } from "../redux/actions";
 import { Button, Modal } from "flowbite-react";
-import { FaComments } from "react-icons/fa";
+import { FaComments, FaExternalLinkAlt } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import SissyCard from "./SissyCard";
 import { filterCataloguesByInput } from "../ia/openaiCatalogueFilter";
@@ -83,7 +83,7 @@ export default function ChatBox() {
 
       {/* Modal para mostrar resultados */}
       <Modal
-        size="6xl"
+        size="7xl"
         show={modalOpen}
         onClose={() => setModalOpen(false)}
         theme={{
@@ -109,18 +109,36 @@ export default function ChatBox() {
         <Modal.Body className="bg-neutral-800">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredCatalogues.map((cat) => (
-              <a
-                href={cat.url}
-                target="_blank"
-                rel="noreferrer"
+              <div
                 key={cat.id}
-                className="animate-fade-down transition-transform duration-300 animate-once hover:scale-105"
+                className="group relative animate-fade-down cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 animate-once hover:scale-105"
+                onClick={() =>
+                  window.open(cat.url, "_blank", "noopener,noreferrer")
+                }
               >
                 <SissyCard image={cat.image}>
-                  <h2 className="text-center text-white">{cat.name}</h2>
+                  <div className="text-center">
+                    <h2 className="mb-1 text-xl font-semibold text-white">
+                      {cat.name}
+                    </h2>
+                    {cat.company && (
+                      <p className="text-sm text-purple-300">{cat.company}</p>
+                    )}
+                  </div>
                 </SissyCard>
-              </a>
+                <div className="absolute inset-0 flex items-center justify-center bg-purple-900/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <span className="flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-white">
+                    Ver Catálogo
+                    <FaExternalLinkAlt className="text-sm" />
+                  </span>
+                </div>
+              </div>
             ))}
+          </div>
+          <div className="mt-8 text-center text-gray-400">
+            <p className="text-sm">
+              * Haz clic en cualquier catálogo para verlo en una nueva ventana
+            </p>
           </div>
         </Modal.Body>
       </Modal>
