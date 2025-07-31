@@ -17,12 +17,16 @@ function SissyNavbar() {
   }, [company, name]);
 
   return (
-    <section className="mb-8">
-      <Navbar fluid rounded className="bg-neutral-900 shadow-lg">
+    <section className="fixed top-0 z-50 w-full">
+      <Navbar fluid className="bg-dark-900/45 backdrop-blur-sm ">
         <Navbar.Brand>
-          <Link to="/" className="flex">
-            <img src={logo} alt="logo store" className="mr-3 h-20" />
-            <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+          <Link to="/" className="flex items-center">
+            <img
+              src={logo}
+              alt="logo store"
+              className="mr-3 h-16 transition-transform hover:scale-105"
+            />
+            <span className="hover:text-accent self-center whitespace-nowrap text-xl font-semibold italic text-white/90 transition-colors">
               Catálogos de Sissy
             </span>
           </Link>
@@ -31,15 +35,22 @@ function SissyNavbar() {
           <div className=""></div>
           <Navbar.Toggle />
         </div>
-        <h2 className="text-lg font-bold italic sm:hidden lg:block">
-          {" "}
-          {name?.toUpperCase()}
-        </h2>
+        {name && (
+          <h2 className="text-accent/90 text-lg font-bold italic sm:hidden lg:block">
+            {name?.toUpperCase()}
+          </h2>
+        )}
         <Navbar.Collapse>
-          <Link className="text-lg font-semibold" to="/">
+          <Link
+            className="hover:text-accent px-4 py-2 text-lg font-semibold text-white/80 transition-colors"
+            to="/"
+          >
             Inicio
           </Link>
-          <Link className="text-lg font-semibold" to="/contact">
+          <Link
+            className="hover:text-accent px-4 py-2 text-lg font-semibold text-white/80 transition-colors"
+            to="/contact"
+          >
             Cotizaciones
           </Link>
         </Navbar.Collapse>

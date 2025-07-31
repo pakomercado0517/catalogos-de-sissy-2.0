@@ -5,16 +5,36 @@ export default function CardSkeleton(props) {
     <>
       <ContentLoader
         speed={1}
-        width={400}
-        height={460}
-        viewBox="0 0 400 460"
-        backgroundColor="#bababa"
-        foregroundColor="#7d7d7d"
-        className="transition-all"
+        width={320}
+        height={288}
+        viewBox="0 0 320 288"
+        backgroundColor="#333333"
+        foregroundColor="#444444"
+        className="w-80 overflow-hidden rounded-2xl"
         {...props}
       >
-        <rect x="128" y="298" rx="2" ry="2" width="211" height="17" />
-        <rect x="128" y="84" rx="2" ry="2" width="211" height="210" />
+        {/* Imagen principal */}
+        <rect x="0" y="0" rx="0" ry="0" width="320" height="288" />
+        {/* Overlay gradiente */}
+        <rect
+          x="0"
+          y="228"
+          rx="0"
+          ry="0"
+          width="320"
+          height="60"
+          opacity="0.8"
+        />
+        {/* Texto del título */}
+        <rect
+          x="20"
+          y="248"
+          rx="2"
+          ry="2"
+          width="280"
+          height="20"
+          opacity="0.9"
+        />
       </ContentLoader>
     </>
   );

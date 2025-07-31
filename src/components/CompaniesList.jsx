@@ -1,42 +1,51 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllCompanies } from "../redux/actions";
+import SissyCard from "./SissyCard";
+import CardSkeleton from "./CardSkeleton";
 
 export default function CompaniesList() {
   const dispatch = useDispatch();
   const companies = useSelector((state) => state.companies);
-
-  console.log("companies", companies);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(getAllCompanies());
+    const fetchCompanies = async () => {
+      await dispatch(getAllCompanies());
+      setIsLoading(false);
+    };
+
+    fetchCompanies();
   }, [dispatch]);
 
   return (
     <section>
-      <div className="min-h-screen bg-neutral-900 px-6 py-10 text-white">
-        <h1 className="mb-8 text-center text-3xl font-bold">
+      <div className="min-h-screen bg-neutral-900 px-6 pb-10 pt-28 text-white">
+        <h1 className="mb-8 text-center text-3xl font-bold italic">
           Catálogos de Sissy
         </h1>
         <div className="grid grid-cols-1 justify-items-center gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {companies.map((company) => (
-            <a
-              key={company.name}
-              href={`/catalogos/${company.id}`}
-              className="group relative w-80 animate-fade-down overflow-hidden rounded-2xl shadow-xl transition-transform duration-300 hover:scale-[1.03]"
-            >
-              <img
-                src={company.image}
-                alt={company.name}
-                className="h-72 w-full object-cover"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-4 py-3 text-center">
-                <p className="text-lg font-semibold tracking-wide transition-colors group-hover:text-gray-400">
-                  {company.name}
-                </p>
-              </div>
-            </a>
-          ))}
+          {isLoading ? (
+            <>
+              {[...Array(6)].map((_, index) => (
+                <div key={index} className="animate-fade-up">
+                  <CardSkeleton />
+                </div>
+              ))}
+            </>
+          ) : (
+            companies.map((company) => (
+              <a
+                key={company.name}
+                href={`/catalogos/${company.id}`}
+                className="group relative w-80 animate-fade-down overflow-hidden rounded-2xl shadow-xl transition-transform duration-300 hover:scale-[1.03]"
+              >
+                <SissyCard image={company.image}>
+                  {company.name.toUpperCase()}
+                </SissyCard>
+              </a>
+            ))
+          )}
         </div>
       </div>
     </section>

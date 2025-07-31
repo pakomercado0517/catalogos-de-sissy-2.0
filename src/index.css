@@ -1,15 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Raleway", sans-serif;
   line-height: 1.5;
+  font-style: italic;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #1A1A1A;
+  background-image: radial-gradient(circle at center, #2B2B2B 0%, #1A1A1A 100%);
+  min-height: 100vh;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,4 +21,12 @@
   -webkit-text-size-adjust: 100%;
 }
 
+/* Estilos personalizados para el Footer Brand */
+.footer-brand-custom {
+  @apply text-gray-300 !important;
+}
+
+.footer-brand-custom span {
+  @apply text-gray-300 !important;
+}
 
