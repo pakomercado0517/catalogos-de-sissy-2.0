@@ -1,7 +1,7 @@
 {
   "name": "catalogos-de-sissy-2.0",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.2.18",
   "type": "module",
   "scripts": {
     "dev": "vite",
