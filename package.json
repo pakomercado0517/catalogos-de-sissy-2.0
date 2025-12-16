@@ -15,7 +15,7 @@
     "axios": "^1.7.5",
     "flowbite": "^1.8.1",
     "flowbite-react": "^0.6.4",
-    "next": "^16.0.7",
+    "next": "16.0.10",
     "openai": "^5.10.2",
     "postcss": "^8.4.41",
     "puppeteer": "^21.11.0",
