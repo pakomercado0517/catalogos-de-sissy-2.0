@@ -3,7 +3,6 @@ import SissyNavbar from "./components/SissyNavbar";
 import Home from "./pages/Home";
 import Catalogos from "./pages/Catalogos";
 import SissyFooter from "./components/SissyFooter";
-import UpdateCatalogos from "./pages/UpdateCatalogos";
 import ChatBox from "./components/ChatBox";
 
 function App() {
@@ -19,7 +18,6 @@ function App() {
           path="/catalogos/:id"
           element={<Catalogos />}
         />
-        <Route path="/actualizar" element={<UpdateCatalogos />} />
       </Routes>
       <SissyFooter />
       <ChatBox />

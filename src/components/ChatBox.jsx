@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllCatalogues } from "../redux/actions";
-import { Button, Modal } from "flowbite-react";
+import { Button, Modal, Spinner } from "flowbite-react";
 import { FaComments, FaExternalLinkAlt } from "react-icons/fa";
 import { IoSend } from "react-icons/io5";
 import SissyCard from "./SissyCard";
+import ApiErrorMessage from "./ApiErrorMessage";
+import { ensureArray } from "../utils/ensureArray";
 import { filterCataloguesByInput } from "../ia/openaiCatalogueFilter";
 
 export default function ChatBox() {
@@ -12,18 +14,36 @@ export default function ChatBox() {
   const [modalOpen, setModalOpen] = useState(false);
   const [userInput, setUserInput] = useState("");
   const [filteredCatalogues, setFilteredCatalogues] = useState([]);
-  const allCatalogues = useSelector((state) => state.allCatalogues);
+  const [searchError, setSearchError] = useState(null);
+  const [isLoadingCatalogues, setIsLoadingCatalogues] = useState(false);
+  const allCatalogues = ensureArray(useSelector((state) => state.allCatalogues));
+  const loadError = useSelector((state) => state.apiErrors.chatCatalogues);
   const dispatch = useDispatch();
 
+  const loadCatalogues = async () => {
+    setIsLoadingCatalogues(true);
+    await dispatch(getAllCatalogues());
+    setIsLoadingCatalogues(false);
+  };
+
   useEffect(() => {
-    if (isOpen && allCatalogues.length === 0) {
-      dispatch(getAllCatalogues());
+    if (isOpen && allCatalogues.length === 0 && !loadError) {
+      loadCatalogues();
     }
-  }, [dispatch, isOpen, allCatalogues.length]);
+  }, [dispatch, isOpen, allCatalogues.length, loadError]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!userInput.trim()) return;
+
+    if (allCatalogues.length === 0) {
+      setSearchError(
+        "Los catalogos aun no estan disponibles. Espera a que carguen o reintenta.",
+      );
+      return;
+    }
+
+    setSearchError(null);
 
     try {
       const filtered = await filterCataloguesByInput(userInput, allCatalogues);
@@ -31,13 +51,16 @@ export default function ChatBox() {
       setModalOpen(true);
       setUserInput("");
     } catch (error) {
-      console.error("Error al procesar la búsqueda:", error);
+      setSearchError(
+        "No se pudo procesar la busqueda. Verifica tu conexion e intenta de nuevo.",
+      );
     }
   };
 
+  const cataloguesReady = allCatalogues.length > 0 && !loadError;
+
   return (
     <>
-      {/* Botón flotante del chat */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 right-6 z-50 rounded-full bg-purple-600 p-4 text-white shadow-lg transition-all duration-300 hover:bg-purple-700"
@@ -45,7 +68,6 @@ export default function ChatBox() {
         <FaComments className="text-2xl" />
       </button>
 
-      {/* Ventana del chat */}
       <div
         className={
           "fixed bottom-24 right-6 z-50 w-96 rounded-lg border border-purple-500/30 bg-neutral-800 shadow-xl transition-all duration-300 " +
@@ -62,18 +84,40 @@ export default function ChatBox() {
             ¿Qué tipo de productos estás buscando? Te ayudaré a encontrar los
             catálogos más relevantes.
           </p>
+
+          {isLoadingCatalogues && (
+            <div className="mb-4 flex items-center gap-2 text-sm text-gray-400">
+              <Spinner size="sm" color="purple" />
+              Cargando catálogos...
+            </div>
+          )}
+
+          {loadError && (
+            <ApiErrorMessage
+              message={loadError}
+              onRetry={loadCatalogues}
+              className="mb-4"
+            />
+          )}
+
+          {searchError && (
+            <p className="mb-4 text-sm text-red-400">{searchError}</p>
+          )}
+
           <form onSubmit={handleSearch} className="flex gap-2">
             <input
               type="text"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               placeholder="Ej: zapatos deportivos, vestidos..."
-              className="flex-1 rounded-lg border-none bg-neutral-700 px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              disabled={!cataloguesReady && !isLoadingCatalogues}
+              className="flex-1 rounded-lg border-none bg-neutral-700 px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:cursor-not-allowed disabled:opacity-50"
             />
             <Button
               type="submit"
               color="purple"
               className="hover:bg-purple-700"
+              disabled={!cataloguesReady && !isLoadingCatalogues}
             >
               <IoSend className="text-xl" />
             </Button>
@@ -81,7 +125,6 @@ export default function ChatBox() {
         </div>
       </div>
 
-      {/* Modal para mostrar resultados */}
       <Modal
         size="7xl"
         show={modalOpen}
@@ -108,7 +151,7 @@ export default function ChatBox() {
         </Modal.Header>
         <Modal.Body className="bg-neutral-800">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredCatalogues.map((cat) => (
+            {ensureArray(filteredCatalogues).map((cat) => (
               <div
                 key={cat.id}
                 className="group relative animate-fade-down cursor-pointer overflow-hidden rounded-lg transition-transform duration-300 animate-once hover:scale-105"

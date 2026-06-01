@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { ensureArray } from "../utils/ensureArray";
 
 const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
@@ -52,6 +53,7 @@ function addToCache(query, results) {
 
 export async function filterCataloguesByInput(userInput, catalogues) {
   try {
+    const safeCatalogues = ensureArray(catalogues);
     const normalizedQuery = userInput.toLowerCase().trim();
 
     // Verificar si hay resultados en caché
@@ -59,11 +61,10 @@ export async function filterCataloguesByInput(userInput, catalogues) {
     if (cache[normalizedQuery]) {
       console.log("Resultados encontrados en caché");
       const cachedIds = cache[normalizedQuery].results;
-      return catalogues.filter((cat) => cachedIds.includes(cat.id));
+      return safeCatalogues.filter((cat) => cachedIds.includes(cat.id));
     }
 
-    // Si no hay caché, preparar una versión simplificada de los catálogos
-    const simplifiedCatalogues = catalogues.map((cat) => ({
+    const simplifiedCatalogues = safeCatalogues.map((cat) => ({
       id: cat.id,
       name: cat.name,
       company: cat.company,
@@ -112,7 +113,7 @@ export async function filterCataloguesByInput(userInput, catalogues) {
     }
 
     // Filtra los catálogos usando los IDs
-    const filteredResults = catalogues.filter((cat) =>
+    const filteredResults = safeCatalogues.filter((cat) =>
       catalogueIds.includes(cat.id),
     );
 
