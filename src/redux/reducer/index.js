@@ -13,9 +13,17 @@ import {
 } from "../actions";
 import { ensureArray } from "../../utils/ensureArray";
 
+const emptyCompanyPagination = {
+  limit: 0,
+  offset: 0,
+  total: 0,
+  hasMore: false,
+};
+
 const initialState = {
   companies: [],
   currentCatalogues: [],
+  companyCataloguesPagination: emptyCompanyPagination,
   company: [],
   updateMessage: "",
   allCatalogues: [],
@@ -36,13 +44,29 @@ export default function rootReducer(state = initialState, { type, payload }) {
     case GET_ALL_COMPANIES:
       return { ...state, companies: ensureArray(payload) };
 
-    case GET_CATALOGUES_BY_COMPANY:
-      return { ...state, currentCatalogues: ensureArray(payload) };
+    case GET_CATALOGUES_BY_COMPANY: {
+      const items = Array.isArray(payload)
+        ? payload
+        : ensureArray(payload?.items);
+      const pagination = Array.isArray(payload)
+        ? emptyCompanyPagination
+        : {
+            ...emptyCompanyPagination,
+            ...(payload?.pagination ?? {}),
+          };
+
+      return {
+        ...state,
+        currentCatalogues: items,
+        companyCataloguesPagination: pagination,
+      };
+    }
 
     case RESET_CATALOGUES_BY_COMPANY:
       return {
         ...state,
         currentCatalogues: initialState.currentCatalogues,
+        companyCataloguesPagination: initialState.companyCataloguesPagination,
         apiErrors: {
           ...state.apiErrors,
           companyCatalogues: null,

@@ -2,8 +2,10 @@ import axios from "axios";
 import { getApiErrorMessage } from "../../utils/getApiErrorMessage";
 import {
   invalidApiShapeError,
+  parseCompanyInformationResponse,
   parsePaginatedResponse,
 } from "../../utils/ensureArray";
+import { CATALOGUE_PAGE_LIMIT_DESKTOP } from "../../constants/cataloguePagination";
 
 const { VITE_SERVER } = import.meta.env;
 const constants = {
@@ -162,33 +164,49 @@ export const clearHomeCategoryCatalogues = () => (dispatch) => {
   dispatch({ type: CLEAR_HOME_CATEGORY_CATALOGUES });
 };
 
-export const getCataloguesByCompany = (id) => async (dispatch) => {
-  // Server-side read cache ~5 min — see docs/CACHE_LECTURAS.md
-  dispatch(clearApiError("companyCatalogues"));
+export const getCataloguesByCompany =
+  (id, { limit = CATALOGUE_PAGE_LIMIT_DESKTOP, offset = 0 } = {}) =>
+  async (dispatch) => {
+    // Server-side read cache ~5 min — see docs/CACHE_LECTURAS.md
+    dispatch(clearApiError("companyCatalogues"));
 
-  try {
-    const catalogues = await axios.get(`${constants.server}/companies/${id}`);
+    try {
+      const response = await axios.get(
+        `${constants.server}/companies/information/${id}`,
+        { params: { limit, offset } },
+      );
 
-    if (!Array.isArray(catalogues.data)) {
-      throw invalidApiShapeError();
+      const parsed = parseCompanyInformationResponse(response);
+      if (!parsed) {
+        throw invalidApiShapeError();
+      }
+
+      dispatch({
+        type: GET_COMPANY_BY_ID,
+        payload: parsed.company,
+      });
+      dispatch({
+        type: GET_CATALOGUES_BY_COMPANY,
+        payload: {
+          items: parsed.items,
+          pagination: parsed.pagination,
+        },
+      });
+      return { ok: true };
+    } catch (error) {
+      dispatch(
+        setApiError("companyCatalogues", getApiErrorMessage(error)),
+      );
+      dispatch({
+        type: GET_CATALOGUES_BY_COMPANY,
+        payload: {
+          items: [],
+          pagination: { limit, offset, total: 0, hasMore: false },
+        },
+      });
+      return { ok: false };
     }
-
-    dispatch({
-      type: GET_CATALOGUES_BY_COMPANY,
-      payload: catalogues.data,
-    });
-    return { ok: true };
-  } catch (error) {
-    dispatch(
-      setApiError("companyCatalogues", getApiErrorMessage(error)),
-    );
-    dispatch({
-      type: GET_CATALOGUES_BY_COMPANY,
-      payload: [],
-    });
-    return { ok: false };
-  }
-};
+  };
 
 export const resetCataloguesByCompany = () => (dispatch) => {
   dispatch(clearApiError("companyCatalogues"));
@@ -204,15 +222,22 @@ export const getCompanyById = (id) => async (dispatch) => {
         type: GET_COMPANY_BY_ID,
         payload: "",
       });
-    } else {
-      const company = await axios.get(
-        `${constants.server}/companies/information/${id}`,
-      );
-      dispatch({
-        type: GET_COMPANY_BY_ID,
-        payload: company.data,
-      });
+      return { ok: true };
     }
+
+    const response = await axios.get(
+      `${constants.server}/companies/information/${id}`,
+      { params: { limit: 1, offset: 0 } },
+    );
+    const parsed = parseCompanyInformationResponse(response);
+    if (!parsed) {
+      throw invalidApiShapeError();
+    }
+
+    dispatch({
+      type: GET_COMPANY_BY_ID,
+      payload: parsed.company,
+    });
     return { ok: true };
   } catch (error) {
     return { ok: false };

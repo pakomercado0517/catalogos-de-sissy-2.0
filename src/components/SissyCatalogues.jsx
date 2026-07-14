@@ -20,13 +20,16 @@ import { formatCategoryLabel } from "../utils/categoryDisplay";
 import {
   catalogueMatchesCategory,
   catalogueMatchesSearch,
-  categoriesPresentInCatalogues,
 } from "../utils/catalogFilters";
+import useCataloguePageLimit from "../hooks/useCataloguePageLimit";
 
 export default function SissyCatalogues({ catalogSearch = "" }) {
   const dispatch = useDispatch();
   const currentCatalogues = ensureArray(
     useSelector((state) => state.currentCatalogues),
+  );
+  const pagination = useSelector(
+    (state) => state.companyCataloguesPagination,
   );
   const catalogCategories = ensureArray(
     useSelector((state) => state.catalogCategories),
@@ -34,22 +37,23 @@ export default function SissyCatalogues({ catalogSearch = "" }) {
   const company = useSelector((state) => state.company);
   const error = useSelector((state) => state.apiErrors.companyCatalogues);
   const { id } = useParams();
+  const limit = useCataloguePageLimit();
+  const [offset, setOffset] = useState(0);
+  const [idSnapshot, setIdSnapshot] = useState(id);
+  const [limitSnapshot, setLimitSnapshot] = useState(limit);
   const [isLoading, setIsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState(null);
   const [localSearch, setLocalSearch] = useState("");
 
+  if (id !== idSnapshot || limit !== limitSnapshot) {
+    setIdSnapshot(id);
+    setLimitSnapshot(limit);
+    setOffset(0);
+  }
+
   const companyName =
     company && typeof company === "object" ? company.name : "";
   const searchQuery = catalogSearch || localSearch;
-
-  const sidebarCategories = useMemo(
-    () =>
-      categoriesPresentInCatalogues(
-        currentCatalogues,
-        catalogCategories,
-      ),
-    [currentCatalogues, catalogCategories],
-  );
 
   const filteredCatalogues = useMemo(() => {
     return currentCatalogues.filter(
@@ -59,11 +63,20 @@ export default function SissyCatalogues({ catalogSearch = "" }) {
     );
   }, [currentCatalogues, activeCategory, searchQuery]);
 
-  const fetchCatalogues = async () => {
+  const pageLimit = pagination?.limit || limit;
+  const pageOffset = pagination?.offset ?? offset;
+  const total = pagination?.total ?? 0;
+  const hasMore = Boolean(pagination?.hasMore);
+  const currentPage =
+    pageLimit > 0 ? Math.floor(pageOffset / pageLimit) + 1 : 1;
+  const totalPages =
+    pageLimit > 0 && total > 0 ? Math.ceil(total / pageLimit) : 1;
+  const showPagination = !error && total > pageLimit;
+
+  const fetchCatalogues = async (pageOffset = offset) => {
     setIsLoading(true);
     await Promise.all([
-      dispatch(getCataloguesByCompany(id)),
-      dispatch(getCompanyById(id)),
+      dispatch(getCataloguesByCompany(id, { limit, offset: pageOffset })),
       dispatch(getCatalogCategories()),
     ]);
     setIsLoading(false);
@@ -72,7 +85,6 @@ export default function SissyCatalogues({ catalogSearch = "" }) {
   useEffect(() => {
     setActiveCategory(null);
     setLocalSearch("");
-    fetchCatalogues();
 
     return () => {
       dispatch(resetCataloguesByCompany());
@@ -81,15 +93,49 @@ export default function SissyCatalogues({ catalogSearch = "" }) {
   }, [id]);
 
   useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setIsLoading(true);
+      await Promise.all([
+        dispatch(getCataloguesByCompany(id, { limit, offset })),
+        dispatch(getCatalogCategories()),
+      ]);
+      if (!cancelled) {
+        setIsLoading(false);
+      }
+    }
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id, limit, offset]);
+
+  useEffect(() => {
     const title = companyName
       ? `Catálogos ${companyName} | Catálogos de Sissy`
       : "Catálogos de Sissy";
     document.title = title;
   }, [companyName]);
 
+  const goToPreviousPage = () => {
+    setOffset((current) => Math.max(0, current - limit));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const goToNextPage = () => {
+    if (!hasMore) return;
+    setOffset((current) => current + limit);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const searchPlaceholder = companyName
     ? `Buscar en ${companyName}...`
     : "Buscar catálogo...";
+
+  const skeletonCount = limit;
 
   return (
     <>
@@ -103,7 +149,7 @@ export default function SissyCatalogues({ catalogSearch = "" }) {
           </p>
         </div>
         <CategoryFilterNav
-          categories={sidebarCategories}
+          categories={catalogCategories}
           activeCategory={activeCategory}
           onSelectCategory={setActiveCategory}
         />
@@ -146,7 +192,7 @@ export default function SissyCatalogues({ catalogSearch = "" }) {
         {error && (
           <ApiErrorMessage
             message={error}
-            onRetry={fetchCatalogues}
+            onRetry={() => fetchCatalogues(offset)}
             className="mb-8"
           />
         )}
@@ -167,7 +213,7 @@ export default function SissyCatalogues({ catalogSearch = "" }) {
             >
               Todas
             </button>
-            {sidebarCategories.map((slug) => (
+            {catalogCategories.map((slug) => (
               <button
                 key={slug}
                 type="button"
@@ -184,9 +230,18 @@ export default function SissyCatalogues({ catalogSearch = "" }) {
           </div>
         </div>
 
+        {!isLoading && !error && total > 0 && (
+          <p className="font-label-sm mb-4 text-on-surface-variant">
+            {total} catálogo{total === 1 ? "" : "s"}
+            {showPagination
+              ? ` · Página ${currentPage} de ${totalPages}`
+              : ""}
+          </p>
+        )}
+
         <div className="grid grid-cols-1 gap-gutter sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {isLoading ? (
-            [...Array(8)].map((_, index) => (
+            [...Array(skeletonCount)].map((_, index) => (
               <CatalogCardSkeleton key={index} />
             ))
           ) : error ? null : filteredCatalogues.length > 0 ? (
@@ -203,6 +258,35 @@ export default function SissyCatalogues({ catalogSearch = "" }) {
             </p>
           )}
         </div>
+
+        {showPagination && (
+          <nav
+            className="mt-10 flex flex-wrap items-center justify-center gap-3"
+            aria-label="Paginación de catálogos"
+          >
+            <button
+              type="button"
+              onClick={goToPreviousPage}
+              disabled={isLoading || pageOffset <= 0}
+              className="font-label-sm inline-flex items-center gap-2 rounded-xl border border-white/10 bg-surface-container-high px-4 py-2.5 text-on-surface transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <MaterialIcon name="chevron_left" className="text-lg" />
+              Anterior
+            </button>
+            <span className="font-label-sm px-2 text-on-surface-variant">
+              {currentPage} / {totalPages}
+            </span>
+            <button
+              type="button"
+              onClick={goToNextPage}
+              disabled={isLoading || !hasMore}
+              className="font-label-sm inline-flex items-center gap-2 rounded-xl border border-white/10 bg-surface-container-high px-4 py-2.5 text-on-surface transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Siguiente
+              <MaterialIcon name="chevron_right" className="text-lg" />
+            </button>
+          </nav>
+        )}
       </main>
 
       <WhatsAppFab />
