@@ -1,19 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Hanken+Grotesk:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
-  font-family: "Raleway", sans-serif;
+  font-family: Manrope, sans-serif;
   line-height: 1.5;
-  font-style: italic;
   font-weight: 400;
-
   color-scheme: dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #1A1A1A;
-  background-image: radial-gradient(circle at center, #2B2B2B 0%, #1A1A1A 100%);
-  min-height: 100vh;
-
+  color: #e5e2e1;
+  background-color: #131313;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -21,7 +19,53 @@
   -webkit-text-size-adjust: 100%;
 }
 
-/* Estilos personalizados para el Footer Brand */
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .hero-gradient {
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(205, 3, 124, 0.15),
+        transparent
+      ),
+      radial-gradient(
+        circle at bottom left,
+        rgba(242, 202, 80, 0.1),
+        transparent
+      );
+  }
+
+  .catalog-hover:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px -20px rgba(242, 202, 80, 0.2);
+  }
+
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #cd037c 0%, #6500b1 100%);
+  }
+}
+
 .footer-brand-custom {
   @apply text-gray-300 !important;
 }
@@ -29,4 +73,3 @@
 .footer-brand-custom span {
   @apply text-gray-300 !important;
 }
-

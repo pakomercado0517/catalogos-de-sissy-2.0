@@ -12,14 +12,14 @@ const constants = {
 
 const PAGE_LIMIT = 100;
 
-async function fetchAllPaginated(path) {
+async function fetchAllPaginated(path, extraParams = {}) {
   let offset = 0;
   let all = [];
   let hasMore = true;
 
   while (hasMore) {
     const response = await axios.get(`${constants.server}${path}`, {
-      params: { limit: PAGE_LIMIT, offset },
+      params: { limit: PAGE_LIMIT, offset, ...extraParams },
     });
     const page = parsePaginatedResponse(response);
 
@@ -41,6 +41,9 @@ export const RESET_CATALOGUES_BY_COMPANY = "RESET_CATALOGUES_BY_COMPANY";
 export const GET_COMPANY_BY_ID = "GET_COMPANY_BY_ID";
 export const UPDATE_CATALOGUES_BY_ID = "UPDATE_CATALOGUES_BY_ID";
 export const GET_ALL_CATALOGUES = "GET_ALL_CATALOGUES";
+export const GET_CATALOG_CATEGORIES = "GET_CATALOG_CATEGORIES";
+export const GET_HOME_CATEGORY_CATALOGUES = "GET_HOME_CATEGORY_CATALOGUES";
+export const CLEAR_HOME_CATEGORY_CATALOGUES = "CLEAR_HOME_CATEGORY_CATALOGUES";
 export const SET_API_ERROR = "SET_API_ERROR";
 export const CLEAR_API_ERROR = "CLEAR_API_ERROR";
 
@@ -97,6 +100,66 @@ export const getAllCatalogues = () => async (dispatch) => {
     dispatch(setApiError("chatCatalogues", getApiErrorMessage(error)));
     return { ok: false };
   }
+};
+
+export const getCatalogCategories = () => async (dispatch) => {
+  dispatch(clearApiError("catalogCategories"));
+
+  try {
+    const response = await axios.get(
+      `${constants.server}/catalogos/categories`,
+    );
+
+    if (!Array.isArray(response.data)) {
+      throw invalidApiShapeError();
+    }
+
+    dispatch({
+      type: GET_CATALOG_CATEGORIES,
+      payload: response.data,
+    });
+    return { ok: true };
+  } catch (error) {
+    dispatch(setApiError("catalogCategories", getApiErrorMessage(error)));
+    return { ok: false };
+  }
+};
+
+export const getCataloguesByCategory = (category) => async (dispatch, getState) => {
+  dispatch(clearApiError("homeCategoryCatalogues"));
+
+  try {
+    const catalogues = await fetchAllPaginated("/catalogos/", { category });
+    const companies = getState().companies ?? [];
+    const companyById = Object.fromEntries(
+      companies.map((company) => [company.id, company.name]),
+    );
+
+    const enriched = catalogues.map((catalogue) => ({
+      ...catalogue,
+      company: companyById[catalogue.companyId] ?? catalogue.company ?? null,
+    }));
+
+    dispatch({
+      type: GET_HOME_CATEGORY_CATALOGUES,
+      payload: { category, items: enriched },
+    });
+    return { ok: true };
+  } catch (error) {
+    dispatch(
+      setApiError("homeCategoryCatalogues", getApiErrorMessage(error)),
+    );
+    dispatch({
+      type: GET_HOME_CATEGORY_CATALOGUES,
+      payload: { category, items: [] },
+    });
+    return { ok: false };
+  }
+};
+
+export const clearHomeCategoryCatalogues = () => (dispatch) => {
+  dispatch(clearApiError("homeCategoryCatalogues"));
+  dispatch({ type: CLEAR_HOME_CATEGORY_CATALOGUES });
 };
 
 export const getCataloguesByCompany = (id) => async (dispatch) => {

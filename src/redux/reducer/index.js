@@ -5,6 +5,9 @@ import {
   GET_COMPANY_BY_ID,
   UPDATE_CATALOGUES_BY_ID,
   GET_ALL_CATALOGUES,
+  GET_CATALOG_CATEGORIES,
+  GET_HOME_CATEGORY_CATALOGUES,
+  CLEAR_HOME_CATEGORY_CATALOGUES,
   SET_API_ERROR,
   CLEAR_API_ERROR,
 } from "../actions";
@@ -16,10 +19,15 @@ const initialState = {
   company: [],
   updateMessage: "",
   allCatalogues: [],
+  catalogCategories: [],
+  homeCategoryCatalogues: [],
+  homeCategoryCataloguesSlug: null,
   apiErrors: {
     companies: null,
     companyCatalogues: null,
     chatCatalogues: null,
+    catalogCategories: null,
+    homeCategoryCatalogues: null,
   },
 };
 
@@ -49,6 +57,27 @@ export default function rootReducer(state = initialState, { type, payload }) {
 
     case GET_ALL_CATALOGUES:
       return { ...state, allCatalogues: ensureArray(payload) };
+
+    case GET_CATALOG_CATEGORIES:
+      return { ...state, catalogCategories: ensureArray(payload) };
+
+    case GET_HOME_CATEGORY_CATALOGUES:
+      return {
+        ...state,
+        homeCategoryCatalogues: ensureArray(payload.items),
+        homeCategoryCataloguesSlug: payload.category ?? null,
+      };
+
+    case CLEAR_HOME_CATEGORY_CATALOGUES:
+      return {
+        ...state,
+        homeCategoryCatalogues: initialState.homeCategoryCatalogues,
+        homeCategoryCataloguesSlug: initialState.homeCategoryCataloguesSlug,
+        apiErrors: {
+          ...state.apiErrors,
+          homeCategoryCatalogues: null,
+        },
+      };
 
     case SET_API_ERROR:
       return {
