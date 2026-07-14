@@ -20,6 +20,7 @@ export default function CompaniesList() {
 
   useEffect(() => {
     fetchCompanies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount only
   }, [dispatch]);
 
   return (

@@ -30,6 +30,7 @@ export default function ChatBox() {
     if (isOpen && allCatalogues.length === 0 && !loadError) {
       loadCatalogues();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- load on open only
   }, [dispatch, isOpen, allCatalogues.length, loadError]);
 
   const handleSearch = async (e) => {

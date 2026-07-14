@@ -3,7 +3,7 @@ export default {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
     "./index.html",
-    "node_modules/flowbite-react/**/*.js",
+    "node_modules/flowbite-react/dist/esm/**/*.mjs",
   ],
   darkMode: "class",
   theme: {
