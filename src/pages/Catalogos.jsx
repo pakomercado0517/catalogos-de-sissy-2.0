@@ -2,10 +2,10 @@
 
 import SissyCatalogues from "../components/SissyCatalogues";
 
-export default function Catalogos({ companyName }) {
+export default function Catalogos({ catalogSearch = "" }) {
   return (
-    <section className="">
-      <SissyCatalogues companyName={companyName} />
+    <section className="flex min-h-screen flex-col">
+      <SissyCatalogues catalogSearch={catalogSearch} />
     </section>
   );
 }

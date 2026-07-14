@@ -1,9 +1,5 @@
-import CompaniesList from "../components/CompaniesList";
-
-export default function Home() {
-  return (
-    <section className="">
-      <CompaniesList />
-    </section>
-  );
+/* eslint-disable react/prop-types */
+import HomeLanding from "../components/home/HomeLanding";
+export default function Home({ brandSearch = "" }) {
+  return <HomeLanding brandSearch={brandSearch} />;
 }
